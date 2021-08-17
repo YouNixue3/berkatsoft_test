@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\dashboard\DashboardController;
+use App\Http\Controllers\dashboard\CostumersController;
+use App\Http\Controllers\dashboard\ProductsController;
+use App\Http\Controllers\dashboard\OrdersController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +17,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['prefix' => 'dashboard'], function() {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/costumers', [CostumersController::class, 'index'])->name('costumers');
+    Route::get('/products', [ProductsController::class, 'index'])->name('products');
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
