@@ -20,7 +20,9 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        return view('products');
+        $products = $this->data->get_data();
+        $data = compact('products');
+        return view('products', $data);
     }
 
     /**
@@ -30,7 +32,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.add');
     }
 
     /**
@@ -41,7 +43,10 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($this->data->store_data($request)) {
+            return redirect()->route('products')->with('success', 'sukses');
+        }
+        return redirect()->back()->with('error', 'gagal');
     }
 
     /**
@@ -63,7 +68,11 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $products = $this->data->get_edit_data($id);
+
+        $data = compact('products');
+
+        return view('products.edit', $data);
     }
 
     /**
@@ -75,7 +84,10 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($this->data->update_data($request, $id)) {
+            return redirect()->route('products')->with('success', 'sukses');
+        }
+        return redirect()->back()->with('error', 'gagal');
     }
 
     /**
@@ -84,8 +96,11 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if ($this->data->destroy_data($request)) {
+            return redirect()->route('products')->with('success', 'sukses');
+        }
+        return redirect()->back()->with('error', 'gagal');
     }
 }

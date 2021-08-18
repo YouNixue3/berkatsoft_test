@@ -20,7 +20,9 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        return view('orders');
+        $orders = $this->data->get_data();
+        $data = compact('orders');
+        return view('orders', $data);
     }
 
     /**
@@ -30,7 +32,10 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        //
+        $costumers = $this->data->get_costumer();
+        $products = $this->data->get_product();
+        $data = compact('costumers', 'products');
+        return view('orders.add',$data);
     }
 
     /**
@@ -41,7 +46,10 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($this->data->store_data($request)) {
+            return redirect()->route('orders')->with('success', 'sukses');
+        }
+        return redirect()->back()->with('error', 'gagal');
     }
 
     /**
@@ -63,7 +71,13 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $orders = $this->data->get_edit_data($id);
+        $costumers = $this->data->get_costumer();
+        $products = $this->data->get_product();
+
+        $data = compact('orders','costumers', 'products');
+
+        return view('orders.edit', $data);
     }
 
     /**
@@ -75,7 +89,10 @@ class OrdersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($this->data->update_data($request, $id)) {
+            return redirect()->route('orders')->with('success', 'sukses');
+        }
+        return redirect()->back()->with('error', 'gagal');
     }
 
     /**
@@ -84,8 +101,11 @@ class OrdersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if ($this->data->destroy_data($request)) {
+            return redirect()->route('orders')->with('success', 'sukses');
+        }
+        return redirect()->back()->with('error', 'gagal');
     }
 }

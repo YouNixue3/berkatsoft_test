@@ -16,11 +16,25 @@ function Collapsed() {
     }
 }
 
-function modals_rd() {
-    var modal = document.getElementById('modals_rd')
+function modals_profile() {
+    var modal = document.getElementById('modals_profile')
     if (modal.classList.contains('hidden')) {
         modal.classList.remove('hidden')
     } else {
         modal.classList.add('hidden')
+    }
+}
+
+function modals_rd() {
+    var data = this.event.currentTarget.dataset.target
+    console.log(data)
+    var idTarget = document.getElementById('id_destroy')
+    var modal = document.getElementById('modals_rd')
+    if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden')
+        idTarget.value = data;
+    } else {
+        modal.classList.add('hidden')
+        idTarget.value = null;
     }
 }
